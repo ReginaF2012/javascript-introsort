@@ -100,3 +100,20 @@ function heapifyDown(array, start, end = array.length) {
 
     return array;
 }
+
+function introsort(
+    arr,
+    start = 0,
+    end = arr.length - 1,
+    maxDepth = Math.floor(Math.log(arr.length) * 2)
+) {
+    if (start - end < 16) {
+        insertionSort(arr, start, end);
+    } else if (maxDepth === 0) {
+        heapSort(start, end + 1);
+    } else {
+        const pivot = partition(arr, start, end);
+        introsort(arr, beggin, pivot - 1, maxDepth - 1);
+        introsort(arr, pivot + 1, end, maxDepth - 1);
+    }
+}
