@@ -65,3 +65,38 @@ function medianOfThree(arr, start, end) {
         }
     }
 }
+
+function heapSort(array, start, end) {
+    for (let i = Math.floor((end - start) / 2); i >= 0; i--) {
+        heapifyDown(array, i, end);
+    }
+
+    for (let i = end + 1; i > 0; i--) {
+        swap(array, start, i);
+        heapifyDown(array, start, i);
+    }
+}
+
+function heapifyDown(array, start, end = array.length) {
+    let largest = start,
+        left = start * 2 + 1,
+        right = start * 2 + 2;
+
+    // compare element to it's left and right child
+    if (left < end && array[left] > array[largest]) {
+        largest = left;
+    }
+    if (right < end && array[right] > array[largest]) {
+        largest = right;
+    }
+
+    // if the parent node isn't the largest element, swap it with the largest child
+    if (largest !== start) {
+        swap(array, start, largest);
+
+        // continue to heapify down
+        heapifyDown(array, largest, end);
+    }
+
+    return array;
+}
