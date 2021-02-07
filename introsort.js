@@ -19,7 +19,9 @@ function insertionSort(arr, start = 0, end = arr.length - 1) {
     }
 }
 
+// partition for quick sort
 function partition(arr, start, end) {
+    // use median of three to select pivot
     const pivot = medianOfThree(arr, start, end);
 
     const pivotVal = arr[pivot];
@@ -49,11 +51,17 @@ function partition(arr, start, end) {
 function medianOfThree(arr, start, end) {
     const mid = Math.floor((start + end) / 2);
 
-    if (arr[start] < arr[left]) swap(arr, start, end);
-
-    if (arr[mid] < arr[end]) swap(arr, mid, start);
-
-    if (arr[start] < arr[mid]) swap(arr, start, mid);
-
-    return mid;
+    if (arr[mid] < arr[start]) {
+        if (arr[end] < arr[mid]) {
+            return mid;
+        } else {
+            return arr[end] < arr[start] ? end : start;
+        }
+    } else {
+        if (arr[end] < arr[mid]) {
+            return arr[end] < arr[start] ? start : end;
+        } else {
+            return mid;
+        }
+    }
 }
