@@ -4,6 +4,7 @@ function swap(array, index1, index2) {
 }
 
 function insertionSort(arr, start = 0, end = arr.length - 1) {
+    console.log('insertion sort')
     let left = start;
     let right = end;
 
@@ -21,6 +22,7 @@ function insertionSort(arr, start = 0, end = arr.length - 1) {
 
 // partition for quick sort
 function partition(arr, start, end) {
+    console.log('quick sort')
     // use median of three to select pivot
     const pivot = medianOfThree(arr, start, end);
 
@@ -67,13 +69,14 @@ function medianOfThree(arr, start, end) {
 }
 
 function heapSort(array, start, end) {
+    console.log('heap sort')
     for (let i = Math.floor((end - start) / 2); i >= 0; i--) {
         heapifyDown(array, i, end);
     }
 
-    for (let i = end + 1; i > 0; i--) {
+    for (let i = end; i > 0; i--) {
         swap(array, start, i);
-        heapifyDown(array, start, i);
+        heapifyDown(array, start, i + 1);
     }
 }
 
@@ -97,8 +100,6 @@ function heapifyDown(array, start, end = array.length) {
         // continue to heapify down
         heapifyDown(array, largest, end);
     }
-
-    return array;
 }
 
 function introsort(
@@ -107,13 +108,42 @@ function introsort(
     end = arr.length - 1,
     maxDepth = Math.floor(Math.log(arr.length) * 2)
 ) {
-    if (start - end < 16) {
+    if (end - start < 16) {
         insertionSort(arr, start, end);
     } else if (maxDepth === 0) {
         heapSort(start, end + 1);
     } else {
         const pivot = partition(arr, start, end);
-        introsort(arr, beggin, pivot - 1, maxDepth - 1);
-        introsort(arr, pivot + 1, end, maxDepth - 1);
+        introsort(arr, start, pivot - 1, maxDepth - 1);
+        introsort(arr, pivot, end, maxDepth - 1);
     }
 }
+
+let arr1 = [];
+
+for (let i = 0; i < 100; i++) {
+    const number = Math.floor(Math.random() * Math.floor(100));
+    arr1.push(number);
+}
+function arraysMatch(arr1, arr2) {
+    // Check if the arrays are the same length
+    if (arr1.length !== arr2.length) return false;
+
+    // Check if all items exist and are in the same order
+    for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) return false;
+    }
+
+    // Otherwise, return true
+    return true;
+};
+
+function correctlySorted(arr) {
+    let sortedArr = [...arr];
+    sortedArr = sortedArr.sort((a, b) => a - b)
+    let introsortedArr = [...arr];
+    introsort(introsortedArr, 0, introsortedArr.length - 1, 2);
+    console.log(introsortedArr);
+    return arraysMatch(sortedArr, introsortedArr) ? 'yes' : 'no';
+}
+console.log("sorted correctly?", correctlySorted(arr1));
